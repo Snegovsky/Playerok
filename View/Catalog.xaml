@@ -1,0 +1,141 @@
+﻿<Window x:Class="Playerok.View.Catalog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Playerok.View"
+        mc:Ignorable="d"
+        Title="Catalog" Height="676" Width="900" Loaded="Window_Loaded"
+        xmlns:classes="clr-namespace:Playerok.Classes"
+        >
+    <Grid  Background="#FFFFFFFF">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="#3C91E6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" Source="/Resources/logo.png" Height="80" />
+            <TextBlock Grid.Column="1" Text="Каталог игр" Style="{StaticResource Title}" />
+            <Button Grid.Column="2" x:Name="buttonNavigate" Style="{StaticResource Title}" Content="Назад"
+                     HorizontalAlignment="Stretch" Height="50" Width="150" 
+                    Background="#A2D729" Click="buttonNavigate_Click" />
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="0.2*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="188*"/>
+                <ColumnDefinition Width="487*"/>
+                <ColumnDefinition Width="225*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="buttonOrder" Content="Перейти к заказу" 
+                    Style="{StaticResource Normal}"  Grid.Column="2" Grid.Row="1" 
+                    VerticalAlignment="Top"  Margin="15,440,15,0"  Background="#A2D729" Grid.RowSpan="2" Click="buttonOrder_Click" />
+
+            <TextBlock x:Name="tbFIO" Grid.Column="2" Grid.Row="0"
+                       Style="{StaticResource Normal}" Margin="0,0,0,464" Grid.RowSpan="2"/>
+            <TextBlock x:Name="tbCount" Text="Количество " Style="{StaticResource Title}" HorizontalAlignment="Left" Margin="40,0,0,0"/>
+
+            <StackPanel Grid.Column="2" Grid.Row="1" Margin="0,0,0,46" Grid.RowSpan="2">
+                <TextBlock Text="Фильтры" Style="{StaticResource Title}" Margin="0,0,0,20"/>
+                <TextBlock Text="Сортировка по стоимости" Style="{StaticResource Normal}"/>
+                <RadioButton x:Name="rbSortAsc" Content="По возрастанию " 
+                                      Style="{StaticResource Normal}"  Checked="rbSortAsc_Checked"/>
+                <RadioButton x:Name="rbSortDesc" Content="По убыванию" 
+                                       Style="{StaticResource Normal}" Checked="rbSortDesc_Checked" Margin="0,0,0,20"/>
+                <TextBlock Text="По скидке" Style="{StaticResource Normal}"/>
+                <ComboBox Name="cbDiscount" SelectionChanged="cbDiscount_SelectionChanged" Margin="0,0,0,20">
+                    <!--Фиксированные элементы в ComboBox-->
+                    <TextBlock>Все диапазоны</TextBlock>
+                    <TextBlock>0-9,99%</TextBlock>
+                    <TextBlock>10-14%</TextBlock>
+                    <TextBlock>15% и более</TextBlock>
+                </ComboBox>
+                <TextBlock Text="По жанру" Style="{StaticResource Normal}"/>
+                <ComboBox Name="cbGenre" SelectionChanged="cbCategory_SelectionChanged" Margin="0,0,0,20"/>
+                <TextBlock Text="Поиск по названию" Style="{StaticResource Normal}"/>
+                <TextBox x:Name="tbSearch" TextChanged="tbSearch_TextChanged" 
+                                  Style="{StaticResource Normal}" />
+
+            </StackPanel>
+
+            <ListBox x:Name="listBoxProducts" Grid.Row="1" Grid.Column="0" 
+                            HorizontalContentAlignment ="Stretch" Grid.ColumnSpan="2" Margin="0,0,0,46" Grid.RowSpan="2"
+                      MouseDoubleClick="listBoxProducts_MouseDoubleClick">
+
+                <ListBox.ItemTemplate >
+                    <DataTemplate>
+                        <Grid  Background="{Binding Path=ColorFocused}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border BorderBrush="Black" BorderThickness="1" Margin="10" 
+                                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Image x:Name="img" Source="{Binding  Path=GameImage}" Stretch="Uniform" 
+                                                Height="150" Width="150" HorizontalAlignment="Center" 
+                                                VerticalAlignment="Center" />
+                            </Border>
+
+                            <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10">
+
+                                <TextBlock  Text="{Binding Path=Name}" FontSize="20" 
+                                                         FontWeight="DemiBold"/>
+                                <TextBlock  TextWrapping="Wrap"  
+                                                        Text="{Binding Path=Genre, StringFormat='Жанр: {0}'}" />
+                                <TextBlock  TextWrapping="Wrap"  
+                                                      Text="{Binding Path=Developer, 
+                                                              StringFormat='Разработчик: {0}'}" />
+                                <TextBlock  Text="{Binding Path=Description}" FontSize="10" Width="400" Height="80" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding Path=Price, 
+                                                          StringFormat='Цена: {0}'}">
+                                </TextBlock>
+
+                                <TextBlock Text="{Binding Path=Discount, 
+                                                          StringFormat='Скидка: {0} %'}" 
+                                                          Visibility="{Binding Path=GameCostDiscountVisibility}"/>
+
+                                <TextBlock Visibility="{Binding Path=GameCostDiscountVisibility}">
+                                                <Run Text="Цена со скидкой: "/>
+                                            
+                                                <Run Text="{Binding Path=GameDiscountCost}" 
+                                                           />
+                                </TextBlock>
+
+                                <StackPanel.ContextMenu>
+                                    <ContextMenu x:Name="cm">
+                                        <MenuItem Header="Добавить в заказ" x:Name="cmAddInOrder" Click="cmAddInOrder_Click"/>
+                                    </ContextMenu>
+                                </StackPanel.ContextMenu>
+
+
+
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="2"  >
+                <!--<Button x:Name="buttonOrderEdit" Content="Работа с заказами" 
+                    Style="{StaticResource Normal}"  Grid.Column="1" Grid.Row="1" 
+                    VerticalAlignment="Bottom"  Margin="10,2,10,2"  Background="#A2D729" />-->
+                <Button x:Name="buttonGameAdd" Content="Добавление игры" 
+                    Style="{StaticResource Normal}"  Grid.Column="1" Grid.Row="1" 
+                    VerticalAlignment="Bottom"  Margin="10,2,10,2"  Background="#A2D729" Click="buttonGameAdd_Click" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
