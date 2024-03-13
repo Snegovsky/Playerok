@@ -29,8 +29,8 @@ namespace Playerok.View
     /// </summary>
     public partial class AddGame : Window
     {
-        private bool isEditingMode;
-        private GameExtended selectedGame;
+        public bool isEditingMode;
+        public GameExtended selectedGame;
         public AddGame(GameExtended game, bool isEditing)
         {
             InitializeComponent();
@@ -38,7 +38,7 @@ namespace Playerok.View
             isEditingMode = isEditing;
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
+        public void Save_Click(object sender, RoutedEventArgs e)
         {
             //Получение данных        
             string strNameGame = tbName.Text; //Название игры
@@ -57,153 +57,157 @@ namespace Playerok.View
             // Получение текущего изображения из элемента Image
             string fileName;
             string fileName1 = null;
-            if (int.Parse(strDiscount) > 30)
+            
+
+                if (int.Parse(strDiscount) > 30)
             {
 
                 System.Windows.MessageBox.Show("Скидка больше 30 процентов!");
             }
-            //Исключение если пустые поля
-            if (strNameGame != "" && strGenre != "" && strDeveloper != "" && strReleaseDate != "" && strPrice != "")
+            else
             {
-                var image = SelectedPhoto.Source as BitmapSource;
-
-
-                fileName = null;
-                // Проверка, что изображение не равно null
-                if (image != null)
+                //Исключение если пустые поля
+                if (strNameGame != "" && strGenre != "" && strDeveloper != "" && strReleaseDate != "" && strPrice != "")
                 {
-                    // Генерация уникального имени файла
-                    string uniqName = strNameGame.Replace(" ", "");
-                    fileName = $"{uniqName.ToString()}.jpg"; //название файла с фото
+                    var image = SelectedPhoto.Source as BitmapSource;
 
-                    //Путь файла
-                    string folderPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Resources");
 
-                    // Полный путь к сохраняемому файлу
-                    string savePath = System.IO.Path.Combine(folderPath, fileName);
-
-                    // Создание кодировщика JPEG для сохранения изображения
-                    JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(image));
-
-                    // Удаление старого файла изображения, если он существует
-                    if (File.Exists(savePath))
+                    fileName = null;
+                    // Проверка, что изображение не равно null
+                    if (image != null)
                     {
-                        File.Delete(savePath);
-                    }
+                        // Генерация уникального имени файла
+                        string uniqName = strNameGame.Replace(" ", "");
+                        fileName = $"{uniqName.ToString()}.jpg"; //название файла с фото
 
-                    // Сохранение файла на диск
-                    using (var fileStream = new FileStream(savePath, FileMode.Create))
-                    {
-                        encoder.Save(fileStream);
-                    }
-                    if (fileName != null)
-                    {
-                        fileName1 = fileName;
-                    }
-                }
-                else
-                {
-                    fileName1 = "NULL";
-                }
-                //Наш товар
-                System.Windows.MessageBox.Show("Название игры:" + strNameGame.ToString() + "\n" +
-                                "Жанр: " + strGenre.ToString() + "\n" +
-                                "Цена: " + strPrice.ToString() + "\n" +
-                                "Скидка: " + strDiscount.ToString() + "\n" +
-                                "Разработчик: " + strDeveloper.ToString() + "\n" +
-                                "Дата релиза: " + strReleaseDate.ToString() + "\n" +
-                                "Описание товара: " + strDescription.ToString() + "\n" +
-                                "Изображение: " + fileName1.ToString() + "\n"
-                    );
+                        //Путь файла
+                        string folderPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Resources");
 
-                //Сохранение в базу данных
-               
-                if (isEditingMode)
-                {
+                        // Полный путь к сохраняемому файлу
+                        string savePath = System.IO.Path.Combine(folderPath, fileName);
 
-                    int gameId = int.Parse(selectedGame.ID);
-                    var existingGame = Helper.DB.Games.Find(gameId);
+                        // Создание кодировщика JPEG для сохранения изображения
+                        JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+                        encoder.Frames.Add(BitmapFrame.Create(image));
 
-                    if (existingGame != null)
-                    {
-                        // Обновляем только нужные поля
-                        existingGame.Name = strNameGame;
-                        existingGame.ID_genre = cbGenres.SelectedIndex;
-                        existingGame.Price = int.Parse(strPrice);
-                        existingGame.Discount = int.Parse(strDiscount);
-                        existingGame.Developer = strDeveloper;
-                        existingGame.Release_date = DateTime.Parse(strReleaseDate);
-                        existingGame.Image = fileName;
-                        existingGame.Description = strDescription;
-
-                        // Устанавливаем состояние сущности в Modified
-                        Helper.DB.Entry(existingGame).State = EntityState.Modified;
-
-                        try
+                        // Удаление старого файла изображения, если он существует
+                        if (File.Exists(savePath))
                         {
-                            //Сохраняем изменения в базу
-                            Helper.DB.SaveChanges();
-                            System.Windows.MessageBox.Show("Товар обновлен");
-                            Catalog catalog = new Catalog();
-                            this.Close();
-                            catalog.Show();
+                            File.Delete(savePath);
                         }
-                        catch
+
+                        // Сохранение файла на диск
+                        using (var fileStream = new FileStream(savePath, FileMode.Create))
                         {
-                            System.Windows.MessageBox.Show("Произошёл сбой при обновлении");
+                            encoder.Save(fileStream);
+                        }
+                        if (fileName != null)
+                        {
+                            fileName1 = fileName;
                         }
                     }
                     else
                     {
-                        System.Windows.MessageBox.Show("Игра не найдена в базе данных");
+                        fileName1 = "NULL";
+                    }
+                    //Наш товар
+                    System.Windows.MessageBox.Show("Название игры:" + strNameGame.ToString() + "\n" +
+                                    "Жанр: " + strGenre.ToString() + "\n" +
+                                    "Цена: " + strPrice.ToString() + "\n" +
+                                    "Скидка: " + strDiscount.ToString() + "\n" +
+                                    "Разработчик: " + strDeveloper.ToString() + "\n" +
+                                    "Дата релиза: " + strReleaseDate.ToString() + "\n" +
+                                    "Описание товара: " + strDescription.ToString() + "\n" +
+                                    "Изображение: " + fileName1.ToString() + "\n"
+                        );
+
+                    //Сохранение в базу данных
+
+                    if (isEditingMode)
+                    {
+
+                        int gameId = int.Parse(selectedGame.ID);
+                        var existingGame = Helper.DB.Games.Find(gameId);
+
+                        if (existingGame != null)
+                        {
+                            // Обновляем только нужные поля
+                            existingGame.Name = strNameGame;
+                            existingGame.ID_genre = cbGenres.SelectedIndex;
+                            existingGame.Price = int.Parse(strPrice);
+                            existingGame.Discount = int.Parse(strDiscount);
+                            existingGame.Developer = strDeveloper;
+                            existingGame.Release_date = DateTime.Parse(strReleaseDate);
+                            existingGame.Image = fileName;
+                            existingGame.Description = strDescription;
+
+                            // Устанавливаем состояние сущности в Modified
+                            Helper.DB.Entry(existingGame).State = EntityState.Modified;
+
+                            try
+                            {
+                                //Сохраняем изменения в базу
+                                Helper.DB.SaveChanges();
+                                System.Windows.MessageBox.Show("Товар обновлен");
+                                Catalog catalog = new Catalog();
+                                this.Close();
+                                catalog.Show();
+                            }
+                            catch
+                            {
+                                System.Windows.MessageBox.Show("Произошёл сбой при обновлении");
+                            }
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("Игра не найдена в базе данных");
+                        }
+
+                    }
+                    else
+                    {
+                        //Создаём объект товара
+                        Model.Games game = new Model.Games()
+                        {
+                            //Запполняем поля
+                            Name = strNameGame,
+                            ID_genre = cbGenres.SelectedIndex,
+                            Price = int.Parse(strPrice),
+                            Discount = int.Parse(strDiscount),
+                            Developer = strDeveloper,
+                            Release_date = DateTime.Parse(strReleaseDate),
+                            Image = fileName,
+                            Description = strDescription
+                        };
+
+                        // Добавление нового продукта в таблицу product
+                        Helper.DB.Games.Add(game);
+                        try
+                        {
+                            //Сохранение в базу
+                            Helper.DB.SaveChanges();
+                            System.Windows.MessageBox.Show("Товар добавлен");
+                            this.Close();
+                            Catalog catalog = new Catalog();
+                            catalog.Show();
+                        }
+                        catch
+                        {
+                            System.Windows.MessageBox.Show("Произошёл сбой при сохранении");
+                        }
                     }
 
                 }
                 else
                 {
-                    //Создаём объект товара
-                    Model.Games game = new Model.Games()
-                    {
-                        //Запполняем поля
-                        Name = strNameGame,
-                        ID_genre = cbGenres.SelectedIndex,
-                        Price = int.Parse(strPrice),
-                        Discount = int.Parse(strDiscount),
-                        Developer = strDeveloper,
-                        Release_date = DateTime.Parse(strReleaseDate),
-                        Image = fileName,
-                        Description = strDescription
-                    };
-
-                    // Добавление нового продукта в таблицу product
-                    Helper.DB.Games.Add(game);
-                    try
-                    {
-                        //Сохранение в базу
-                        Helper.DB.SaveChanges();
-                        System.Windows.MessageBox.Show("Товар добавлен");
-                        this.Close();
-                        Catalog catalog = new Catalog();
-                        catalog.Show();
-                    }
-                    catch
-                    {
-                        System.Windows.MessageBox.Show("Произошёл сбой при сохранении");
-                    }
+                    System.Windows.MessageBox.Show("Вы не все заполнили");
                 }
-              
             }
-            else 
-            {
-                System.Windows.MessageBox.Show("Вы не все заполнили");
-            }
-           
            
 
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        public void Window_Loaded(object sender, RoutedEventArgs e)
         {
             List<Genres> genres1 = new List<Genres>();
             genres1 = Helper.DB.Genres.ToList();          
@@ -230,7 +234,7 @@ namespace Playerok.View
             }
         }
 
-        private void SelectPhoto_Click(object sender, RoutedEventArgs e)
+        public void SelectPhoto_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image files (*.jpg) | *.jpg";
@@ -245,7 +249,7 @@ namespace Playerok.View
             }
         }
 
-        private void tbPrice_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        public void tbPrice_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$"); // Регулярное выражение для проверки числа
             if (!regex.IsMatch(e.Text))
@@ -254,7 +258,7 @@ namespace Playerok.View
             }
         }
 
-        private void tbDiscount_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        public void tbDiscount_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$"); // Регулярное выражение для проверки числа
             if (!regex.IsMatch(e.Text))
@@ -263,7 +267,7 @@ namespace Playerok.View
             }
         }
 
-        private void buttonBack_Click(object sender, RoutedEventArgs e)
+        public void buttonBack_Click(object sender, RoutedEventArgs e)
         {
            
             Catalog catalog = new Catalog();
