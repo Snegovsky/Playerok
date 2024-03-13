@@ -20,7 +20,7 @@
             </Grid.ColumnDefinitions>
             <Image Source="/Resources/logo.png" Height="80"/>
             <TextBlock x:Name="tbTitle" Grid.Column="1" Style="{StaticResource Title}" Height="34" Width="300"><Run Text="Добавление игры"/></TextBlock>
-            <Button Grid.Column="2" Name="buttonBack" Content="Назад" Style="{StaticResource Normal}" Background="#A2D729" Margin="10,10,10,0" Height="50" VerticalAlignment="Top" Click="buttonBack_Click" />
+            <Button Grid.Column="2" Name="buttonBack" Content="Назад"   Margin="10,10,10,0" Height="50" Width="120" VerticalAlignment="Top" Click="buttonBack_Click" />
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -45,10 +45,10 @@
             </UniformGrid>
             <StackPanel Grid.Column="1" Margin="10">
                 <Image x:Name="SelectedPhoto"  Margin="10" Width="180" Height="100" />
-                <Button x:Name="SelectPhoto"  Content="Выбрать фото ..." Margin="10" Height="28" Click="SelectPhoto_Click"/>
+                <Button x:Name="SelectPhoto"  Content="Выбрать фото ..." Margin="10" Height="35" Width="180" Click="SelectPhoto_Click"/>
                 <TextBlock Text="Описание игры" HorizontalAlignment="Center" Style="{StaticResource Normal}" />
                 <TextBox x:Name="tbDescription" Tag="Введите текст"   Height="70" AcceptsTab="True" VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" AcceptsReturn="True" />
-                <Button x:Name="Save"  Content="Сохранить" Margin="10" Height="28" Click="Save_Click"/>
+                <Button x:Name="Save"  Content="Сохранить" Margin="10" Height="35" Width="150" Click="Save_Click"/>
             </StackPanel>
         </Grid>
     </Grid>

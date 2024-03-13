@@ -23,33 +23,30 @@
             </Grid.ColumnDefinitions>
             <Image Grid.Column="0" Source="/Resources/logo.png" Height="80" />
             <TextBlock Grid.Column="1" Text="Каталог игр" Style="{StaticResource Title}" />
-            <Button Grid.Column="2" x:Name="buttonNavigate" Style="{StaticResource Title}" Content="Назад"
-                     HorizontalAlignment="Stretch" Height="50" Width="150" 
-                    Background="#A2D729" Click="buttonNavigate_Click" />
+            <Button Grid.Column="2" x:Name="buttonNavigate" Content="Назад" 
+                     HorizontalAlignment="Stretch" Height="50" Width="180" 
+                     Click="buttonNavigate_Click" Margin="30,5,5,5" />
         </Grid>
 
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.3*"/>
-                <RowDefinition Height="2*"/>
                 <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="2.5*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="188*"/>
                 <ColumnDefinition Width="487*"/>
                 <ColumnDefinition Width="225*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="buttonOrder" Content="Перейти к заказу" 
-                    Style="{StaticResource Normal}"  Grid.Column="2" Grid.Row="1" 
-                    VerticalAlignment="Top"  Margin="15,440,15,0"  Background="#A2D729" Grid.RowSpan="2" Click="buttonOrder_Click" />
+            
 
-            <TextBlock x:Name="tbFIO" Grid.Column="2" Grid.Row="0"
-                       Style="{StaticResource Normal}" Margin="0,0,0,464" Grid.RowSpan="2"/>
+            <TextBlock x:Name="tbFIO" Grid.Column="2" Grid.Row="0" Height="50" VerticalAlignment="Top"
+                       Style="{StaticResource Normal}" Margin="10,10,10,10" Grid.RowSpan="2"/>
             <TextBlock x:Name="tbCount" Text="Количество " Style="{StaticResource Title}" HorizontalAlignment="Left" Margin="40,0,0,0"/>
 
-            <StackPanel Grid.Column="2" Grid.Row="1" Margin="0,0,0,46" Grid.RowSpan="2">
+            <StackPanel Grid.Column="2" Grid.Row="1" Margin="10,10,10,10" Grid.RowSpan="2">
                 <TextBlock Text="Фильтры" Style="{StaticResource Title}" Margin="0,0,0,20"/>
-                <TextBlock Text="Сортировка по стоимости" Style="{StaticResource Normal}"/>
+                <TextBlock Text="Сортировка по стоимости" Style="{StaticResource Normal}" Margin="0,0,0,10"/>
                 <RadioButton x:Name="rbSortAsc" Content="По возрастанию " 
                                       Style="{StaticResource Normal}"  Checked="rbSortAsc_Checked"/>
                 <RadioButton x:Name="rbSortDesc" Content="По убыванию" 
@@ -67,11 +64,17 @@
                 <TextBlock Text="Поиск по названию" Style="{StaticResource Normal}"/>
                 <TextBox x:Name="tbSearch" TextChanged="tbSearch_TextChanged" 
                                   Style="{StaticResource Normal}" />
+                <Button x:Name="buttonOrder" Content="Перейти к заказу" 
+                     Grid.Column="2" Grid.Row="1" Height="40" Width="200"
+                    VerticalAlignment="Top"  Margin="15,30,15,15"   Grid.RowSpan="2" Click="buttonOrder_Click" />
+                <Button x:Name="buttonGameAdd" Content="Добавление игры" 
+                    Grid.Column="2" Grid.Row="1" Height="40" Width="200" 
+                    VerticalAlignment="Bottom"  Margin="15,15,15,15"  Click="buttonGameAdd_Click" />
 
             </StackPanel>
 
             <ListBox x:Name="listBoxProducts" Grid.Row="1" Grid.Column="0" 
-                            HorizontalContentAlignment ="Stretch" Grid.ColumnSpan="2" Margin="0,0,0,46" Grid.RowSpan="2"
+                            HorizontalContentAlignment ="Stretch" Grid.ColumnSpan="2" Margin="15,15,15,15" Grid.RowSpan="2"
                       MouseDoubleClick="listBoxProducts_MouseDoubleClick">
 
                 <ListBox.ItemTemplate >
@@ -128,14 +131,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <StackPanel Grid.Row="2" Orientation="Horizontal" Grid.ColumnSpan="2"  >
-                <!--<Button x:Name="buttonOrderEdit" Content="Работа с заказами" 
-                    Style="{StaticResource Normal}"  Grid.Column="1" Grid.Row="1" 
-                    VerticalAlignment="Bottom"  Margin="10,2,10,2"  Background="#A2D729" />-->
-                <Button x:Name="buttonGameAdd" Content="Добавление игры" 
-                    Style="{StaticResource Normal}"  Grid.Column="1" Grid.Row="1" 
-                    VerticalAlignment="Bottom"  Margin="10,2,10,2"  Background="#A2D729" Click="buttonGameAdd_Click" />
-            </StackPanel>
+            
         </Grid>
     </Grid>
 </Window>

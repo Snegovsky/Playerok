@@ -20,7 +20,7 @@
             </Grid.ColumnDefinitions>
             <Image Source="/Resources/logo.png" Height="80"/>
             <TextBlock Grid.Column="1" Text="Оформление заказа" Style="{StaticResource Title}" Height="34" Width="238"/>
-            <Button Grid.Column="2" Name="buttonBack" Content="Назад" Style="{StaticResource Normal}" Background="#A2D729" Margin="10,10,10,10" Height="50"  Click="buttonBack_Click" />
+            <Button Grid.Column="2" Name="buttonBack" Content="Назад"  Margin="10,10,10,10" Height="50" Width="120" Click="buttonBack_Click" />
         </Grid>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -86,7 +86,7 @@
                 <TextBlock x:Name="tbSumDiscount" Text="Величина скидки: "/>
                 <TextBlock x:Name="tbSumTotalWithDiscount" Text="Сумма заказа со скидкой: "/>
                 <TextBlock Text="Статус заказа: Новый"/>
-                <Button x:Name="btnMakeOrder" Content="Оформить заказ" Height="40" Width="300"  Background="#A2D729"
+                <Button x:Name="btnMakeOrder" Content="Оформить заказ" Height="40" Width="300"  
                         Click="btnMakeOrder_Click"/>
             </StackPanel>
         </Grid>

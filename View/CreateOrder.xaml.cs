@@ -25,7 +25,7 @@ namespace Playerok.View
     {
         List<GameInOrder> listOrder;
         int orderCode = 0;
-        double sumTotalWithDiscount = 0;
+        double sum = 0;
         public CreateOrder(List<GameInOrder> listOrder2)
         {
             InitializeComponent();
@@ -51,19 +51,28 @@ namespace Playerok.View
             {
                 listBoxGames.ItemsSource = listOrder;
                 double sumTotal = 0;
-                
-                
+                double totalDiscount = 0;
+                double sumTotalWithDiscount = 0;
                 foreach (var item in listOrder)
                 {
+                    double itemDiscount = (item.GameExtended.Game.Price - item.GameExtended.GameDiscountCost) * item.CountGameInOrder;
+
+                    // Добавление скидки текущего товара к общей скидке
+                    totalDiscount += itemDiscount;
+
+                    // Расчет общей суммы заказа без учета скидок
                     sumTotal += item.GameExtended.Game.Price * item.CountGameInOrder;
+
+                    // Расчет общей суммы заказа с учетом скидок
                     sumTotalWithDiscount += item.GameExtended.GameDiscountCost * item.CountGameInOrder;
-                    
+
                 }
                 tbSumTotal.Text = "Сумма заказа: " + sumTotal.ToString();
                 tbSumDiscount.Text = "Cумма скидки: " + Convert.ToString(sumTotal - sumTotalWithDiscount);
                 tbSumTotalWithDiscount.Text = "Сумма со скидкой: " + sumTotalWithDiscount.ToString();
-                
-                
+                sum = sumTotalWithDiscount;
+
+
             }
             
         }
@@ -107,7 +116,7 @@ namespace Playerok.View
                     Order.ID_user = Helper.User.ID_user;
                     Order.Code = orderCode;
                     Order.ID_status = 6;
-                    Order.Price = (int)sumTotalWithDiscount;
+                    Order.Price = (int)sum;
                     Helper.DB.Orders.Add(Order);
                     Helper.DB.SaveChanges();
                     foreach (Classes.GameInOrder item in listOrder)
